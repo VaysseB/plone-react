@@ -1,7 +1,9 @@
 import path from 'path';
 import webpack from 'webpack';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import RewriteImportPlugin from 'less-plugin-rewrite-import';
 import fs from 'fs';
 
 const projectRootPath = path.resolve(__dirname, '../');
@@ -107,7 +109,14 @@ module.exports = {
             loader: 'less-loader',
             options: {
               outputStyle: 'expanded',
-              sourceMap: true
+              sourceMap: true,
+              plugins: [
+                new RewriteImportPlugin({
+                  paths: {
+                    '../../theme.config':  __dirname + '/src/theme/theme.config'
+                  }
+                })
+              ]
             }
           }
         ]
@@ -116,7 +125,7 @@ module.exports = {
         test: /\.scss$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'url-loader'
           },
           BASE_CSS_LOADER,
           {
@@ -159,6 +168,7 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new CaseSensitivePathsPlugin(),
+    new ExtractTextPlugin({ filename: '[name]-[chunkhash].css', disable: false, allChunks: true }),
     new CopyWebpackPlugin([{
       context: 'src/static',
       from: '**/*',

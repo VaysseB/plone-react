@@ -12,6 +12,10 @@ import { Breadcrumbs, Footer, Header, Navigation, Toolbar } from '../../../compo
 import { getBaseUrl, getView } from '../../../helpers';
 import { getContent, getNavigation, getBreadcrumbs, getWorkflow } from '../../../actions';
 
+import './App.less';
+// import 'semantic-ui-less/definitions/globals/reset.less';
+import 'semantic-ui-less/definitions/globals/site.less';
+
 /**
  * This function defines the app component.
  * @function App
